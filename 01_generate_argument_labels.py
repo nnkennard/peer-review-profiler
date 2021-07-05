@@ -1,4 +1,5 @@
 import argparse
+import collections
 import glob
 import json
 import nltk
@@ -6,12 +7,9 @@ import numpy as np
 import re
 import torch
 import torch.nn.functional as F
-from torch.utils.data import DataLoader, SequentialSampler, TensorDataset
-import transformers
 from tqdm import tqdm
-#from transformers import pipeline, AutoTokenizer, AutoModelForQuestionAnswering
-#from transformers import BertForSequenceClassification
-#from transformers import BertTokenizer
+import transformers
+from torch.utils.data import DataLoader, SequentialSampler, TensorDataset
 
 parser = argparse.ArgumentParser(
     description='Clean and anonymize annotation data')
@@ -29,75 +27,15 @@ parser.add_argument('-m',
                     '--model',
                     type=str,
                     help='Pretrained SciBERT checkpoint')
+parser.add_argument(
+    '-o',
+    '--output_file',
+    type=str,
+    default="arguments_output.json",
+    help='Output JSON file')
+
 
 ARGUMENT_LABEL_LIST = "fact evaluation request reference non-arg quote".split()
-
-
-def get_sentences(review):
-  text = re.sub(r'\n', ' ', review)
-  text = re.sub(r' +', ' ', text)
-  text = re.sub(r'\d.', '<NUM>', text)
-  text = re.sub(r'al.', 'al', text)
-  review_sentences = nltk.sent_tokenize(text)
-  return review_sentences
-
-
-def get_unlabeled_data(filepath=None):
-  """
-    Converts json file(s) containing entire reviews
-    into a single dataframe contaning review sentences
-
-    This is the input data for the model
-    """
-  data_dict = {}
-  count = 0
-  if filepath is not None:
-    # process a single file
-    process_review_file(filepath, data_dict, count, venue=None)
-  else:
-    # Process all reviews from a list of all conferences
-    # stored at the top of this file
-    for venue, path in tqdm(filepaths.items()):
-      count += process_review_file(path, data_dict, count, venue)
-  data_df = pd.DataFrame.from_dict(data_dict, orient='index')
-
-  # if processing all conferences, save unlabeled input data
-  if filepath is not None:
-    data_df.to_csv(output_dir + 'unlabeled.csv')
-
-  # Either ways, return the dataframe
-  return data_df
-
-
-def process_review_file(filepath, data_dict, count, venue):
-  """
-    Iteratively split a review into sentences, 
-    add the sentences to a shared dictionary,
-    and return the updated count 
-    
-    filepath: path to the JSON file of reviews
-    data_dict: dictionary that stores all the sentences
-    count: total number of sentences in the dictionary
-    venue: conference venue (where the reviews are from)
-    """
-  with open(filepath, 'r') as f:
-    data = json.load(f)
-    reviews = data['review_rebuttal_pairs']
-    for number, review in tqdm(enumerate(reviews)):
-      review_sentences = get_sentences(review['review_text']['text'])
-      assert len(review_sentences) > 0
-      for sent in review_sentences:
-        data_dict[count] = {
-            'id': review['review_sid'],
-            'number': review['index'],
-            'review_sent': sent,
-            'venue': venue,
-            'decision': review['decision']
-        }
-        count += 1
-  return count
-
-
 SCIBERT_BASE = "allenai/scibert_scivocab_uncased"
 
 
@@ -123,7 +61,7 @@ def get_argument_features(examples, scibert_ckpt):
   """
     Runs the trained argument models in evaluation mode
   """
-  review_ids, review_texts = zip(*examples)
+  keys, review_texts = zip(*examples)
 
   device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
   model, tokenizer = get_model_and_tokenizer(scibert_ckpt, device)
@@ -157,7 +95,6 @@ def get_argument_features(examples, scibert_ckpt):
     logits = output[0]
     predictions.append(logits)
 
-  print(predictions)
   predictions = torch.cat(predictions, dim=0)
   probs = F.softmax(predictions, dim=1).cpu().numpy()
 
@@ -165,6 +102,37 @@ def get_argument_features(examples, scibert_ckpt):
   for p in probs:
     labels.append(ARGUMENT_LABEL_LIST[np.argmax(p)])
 
+  label_sequence_builder = collections.defaultdict(lambda : collections.defaultdict())
+  for key, label in zip(keys, labels):
+    review_id, index = retrieve_from_sentence_key(key)
+    label_sequence_builder[review_id][index] = label
+
+  features = {}
+  for review_id, labels in label_sequence_builder.items():
+    assert list(sorted(labels.keys())) == list(range(len(labels)))
+    features[review_id] = {
+    "argument_labels":[labels[i] for i in sorted(labels.keys())]}
+
+  return features
+
+
+def create_sentence_key(review_id, index):
+  return "{0}|||{1}".format(review_id, index)
+
+def retrieve_from_sentence_key(sentence_key):
+  review_id, index = sentence_key.split("|||")
+  return review_id, int(index)
+
+def get_example_tuples(file_example_list):
+  example_tuples = []
+  for example in file_example_list:
+    sentences = nltk.sent_tokenize(example["review_text"])
+    for i, sentence in enumerate(sentences):
+      example_tuples.append(
+        (create_sentence_key(example["review_id"], i),
+        sentence)
+      )
+  return example_tuples
 
 
 def main():
@@ -185,16 +153,11 @@ def main():
   example_list = []
   for input_file in input_files:
     with open(input_file, 'r') as f:
-      example_list += [(x["review_id"], x["review_text"]) for x in json.load(f)]
+      example_list += get_example_tuples(json.load(f))
 
   argument_features = get_argument_features(example_list, args.model)
 
-  if args.output_file is not None:
-    output_filename = args.output_file
-  else:
-    output_filename = "arguments_output.json"
-
-  with open(output_filename, 'w') as f:
+  with open(args.output_file, 'w') as f:
     json.dump(argument_features, f)
 
 
