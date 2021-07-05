@@ -22,8 +22,8 @@ ANNOTATOR_MAP = {
 }
 
 REVIEW_FILE_MAP = {
-    'iclr18': 'data_bundle/json_data/iclr18_ann.json',
-    'neurips18': 'data_bundle/json_data/neurips18_ann_sm.json'
+    'iclr18': 'annotation_data/iclr18_ann.json',
+    'neurips18': 'annotation_data/neurips18_ann_sm.json'
 }
 
 
@@ -36,7 +36,8 @@ def build_text_map(review_file_map):
       for review_rebuttal_pair in text_data["review_rebuttal_pairs"]:
         review_sid = review_rebuttal_pair["review_sid"]
         assert review_sid not in overall_text_map
-        overall_text_map[review_sid] = review_rebuttal_pair["review_text"]
+        overall_text_map[review_sid] = review_rebuttal_pair[
+            "review_text"]["text"]
   return overall_text_map
 
 
@@ -131,7 +132,7 @@ class CleanedAnnotation(object):
 
   def asdict(self):
     return {
-        "text": self.text,
+        "review_text": self.text,
         "all_annotations": [ann._asdict() for ann in self.all_annotations],
         "conference": self.conference,
         "review_id": self.review_id,
