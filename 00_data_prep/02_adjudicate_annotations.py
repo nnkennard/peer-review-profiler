@@ -20,6 +20,11 @@ parser.add_argument('-o',
                     '--output_file',
                     type=str,
                     help='path to adjudicated output file')
+parser.add_argument('-d',
+                    '--debug',
+                    action='store_true',
+                    help='path to adjudicated output file')
+
 
 ALL_ANNOTATORS = ["anno{0}".format(i) for i in range(4)]
 
@@ -92,6 +97,10 @@ def main():
         gold_annotation = adjudicate(all_annotations)
       example["gold_annotation"] = gold_annotation
       final_examples.append(example)
+
+  if args.debug:
+    final_examples = final_examples[:20]
+    output_file = output_file.replace(".json", "_debug.json")
 
   with open(output_file, 'w') as f:
     json.dump(final_examples, f)
