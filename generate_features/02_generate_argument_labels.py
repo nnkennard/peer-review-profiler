@@ -2,7 +2,6 @@ import argparse
 import collections
 import glob
 import json
-import nltk
 import numpy as np
 import re
 import torch
@@ -18,20 +17,14 @@ parser.add_argument(
     '--input_file',
     type=str,
     help='JSON file with review text to annotate with arguments')
-parser.add_argument(
-    '-d',
-    '--input_dir',
-    type=str,
-    help='Directory containing JSON files to be annotated with arguments')
 parser.add_argument('-m',
                     '--model',
                     type=str,
                     help='Pretrained SciBERT checkpoint')
 parser.add_argument(
     '-o',
-    '--output_file',
+    '--output_dir',
     type=str,
-    default="arguments_output.json",
     help='Output JSON file')
 
 
@@ -126,8 +119,7 @@ def retrieve_from_sentence_key(sentence_key):
 def get_example_tuples(file_example_list):
   example_tuples = []
   for example in file_example_list:
-    sentences = nltk.sent_tokenize(example["review_text"])
-    for i, sentence in enumerate(sentences):
+    for i, sentence in enumerate(example["tokenized_review_text"]):
       example_tuples.append(
         (create_sentence_key(example["review_id"], i),
         sentence)
@@ -157,7 +149,7 @@ def main():
 
   argument_features = get_argument_features(example_list, args.model)
 
-  with open(args.output_file, 'w') as f:
+  with open(args.output_dir + "/argument_features.json", 'w') as f:
     json.dump(argument_features, f)
 
 

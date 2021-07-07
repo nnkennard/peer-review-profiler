@@ -1,6 +1,8 @@
 import argparse
 import collections
 import json
+import nltk
+import re
 
 import annotation_lib
 
@@ -26,6 +28,24 @@ REVIEW_FILE_MAP = {
     'neurips18': 'annotation_data/neurips18_ann_sm.json'
 }
 
+PRE_TOKENIZATION_REGEXES = [
+(r'\n', ' '),
+(r'(\d)(?:\.) ', '\g<1>, '),
+(r'((\b\w)+)(?:\.)', '\g<1> '),
+(r'(?i)etc.', 'etc'),
+(r'(?i)eqn.', 'eqn'),
+(r'(?i)eq.', 'eq'),
+(r'(?i)fig.', 'fig'),
+(r'(?i)sec.', 'sec'),
+(r'al.', 'al'),
+(r' +', ' '),
+]
+
+def sentence_separate(text):
+  for regex, replacement in PRE_TOKENIZATION_REGEXES:
+    text = re.sub(regex, replacement, text)
+  return nltk.sent_tokenize(text)
+
 
 def build_text_map(review_file_map):
   overall_text_map = {}
@@ -36,8 +56,9 @@ def build_text_map(review_file_map):
       for review_rebuttal_pair in text_data["review_rebuttal_pairs"]:
         review_sid = review_rebuttal_pair["review_sid"]
         assert review_sid not in overall_text_map
-        overall_text_map[review_sid] = review_rebuttal_pair[
-            "review_text"]["text"]
+        text = review_rebuttal_pair["review_text"]["text"]
+        overall_text_map[review_sid] = (text, sentence_separate(text))
+
   return overall_text_map
 
 
@@ -98,14 +119,10 @@ class CleanedAnnotation(object):
 
   def __init__(self, annotations, text_map, annotator_map, review_id):
     final_annotations = self._get_final_annotations(annotations)
-    if len(final_annotations) == 3:
-      for i in final_annotations:
-        print(i)
-      print()
     self.all_annotations = [
         self._clean_annotation(ann, annotator_map) for ann in final_annotations
     ]
-    self.conference, self.text = get_conference_and_text(
+    self.conference, (self.text, self.tokenized_text) = get_conference_and_text(
         review_id, text_map)
     self.review_id = review_id
 
@@ -133,6 +150,7 @@ class CleanedAnnotation(object):
   def asdict(self):
     return {
         "review_text": self.text,
+        "tokenized_review_text": self.tokenized_text,
         "all_annotations": [ann._asdict() for ann in self.all_annotations],
         "conference": self.conference,
         "review_id": self.review_id,

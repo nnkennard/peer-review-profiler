@@ -25,6 +25,16 @@ def check_item(index, item):
         ("The value of review_text field should be a string; "
          "check item {0}").format(index))
     return False
+  elif 'tokenized_review_text' not in item:
+    print(
+      "Item {0} is missing the tokenized_review_text field".format(index))
+    return False
+  elif not all(type(i) == str for i in item['tokenized_review_text']):
+    print(
+        ("The value of tokenized_review_text field should be a list "
+         "of strings; check item {0}").format(index))
+    return False
+
   return True
 
 def main():
@@ -38,7 +48,8 @@ def main():
 
     if type(obj) == list:
       if all(check_item(i, item) for i, item in enumerate(obj)):
-        print("You're good to go!")
+        print("You're good to go; {0} is formatted correctly".format(
+            args.annotation_file))
     else:
       print("The top level type of the json file should be a list.")
 

@@ -16,10 +16,9 @@ parser.add_argument(
     help='result.jsonl file produced by ReviewAdvisor tagger')
 parser.add_argument(
     '-o',
-    '--output_file',
+    '--output_dir',
     type=str,
-    default="arguments_output.json",
-    help='Output JSON file')
+    help='Output directory for this run')
 
 
 
@@ -44,7 +43,7 @@ def main():
       aspect_features[review_id] = label_list
 
 
-  with open(args.output_file, 'w') as f:
+  with open(args.output_dir + "/aspect_features.json", 'w') as f:
     json.dump(aspect_features, f)
 
 
