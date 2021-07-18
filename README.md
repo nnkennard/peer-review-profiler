@@ -18,11 +18,13 @@ This requires an input json file with the format:
 ```
 [
   {
-    "review_text": "This is the first review.",
+    "review_text": "This is the first review. This is the second sentence of the first review.",
+    "tokenized_review_text": ["This is the first review.", "This is the second sentence of the first review."],
     "review_id": "review_id_1"
   },
   {
     "review_text": "This is the second review.",
+    "tokenized_review_text": ["This is the second review.", "This is the second sentence of the second review."],
     "review_id": "review_id_2"
   },
 ]
@@ -33,7 +35,7 @@ This requires an input json file with the format:
 bash run_feature_pipeline.sh -i [input_json_file] -r [run_name]
 ```
 
-Name the run something that will indicate which input json file was used. The generated features will be found in a `[run_name]/final_features.json`.
+Name the run something that will help identify which input json file was used. The generated features will be found in a `[run_name]/final_features.json`.
 
 ## Feature pipeline
 
