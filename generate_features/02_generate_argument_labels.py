@@ -1,3 +1,14 @@
+"""Generate argument labels using AMPERE dataset.
+  Args:
+    input_file: properly formatted input JSON file
+    model: SciBERT model TODO(CL): Fill in the details of where this came from.
+    output_dir: output directory for this run.
+
+  Outputs:
+    Argument lists at the sentence level are written to argument_features.json
+      in the run directory.
+"""
+
 import argparse
 import collections
 import glob

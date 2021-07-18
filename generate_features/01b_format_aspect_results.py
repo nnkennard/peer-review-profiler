@@ -1,13 +1,16 @@
+"""Script to consolidate aspect features with review_id.
+"""
+
 import argparse
 import collections
 import json
 
 parser = argparse.ArgumentParser(
-    description='Clean and anonymize annotation data')
+    description='Consolidate features from ReviewAdvisor')
 parser.add_argument('-i',
                     '--input_file',
                     type=str,
-                    help='JSON file with review text to annotate with aspects')
+                    help='Original JSON file used to generate aspect features.')
 parser.add_argument('-r',
                     '--result_file',
                     type=str,
@@ -21,17 +24,17 @@ parser.add_argument('-o',
 def main():
   args = parser.parse_args()
 
-  text_map = collections.OrderedDict()
+  text_and_ids = []
   with open(args.input_file, 'r') as f:
     input_obj = json.load(f)
     for x in input_obj:
-      text_map[x["review_text"]] = x["review_id"]
+      text_and_ids.append((x["review_text"], x["review_id"]))
 
   aspect_features = {}
 
   with open(args.result_file, 'r') as f:
     lines = f.readlines()
-    for result_text, (review_text, review_id) in zip(lines, text_map.items()):
+    for result_text, (review_text, review_id) in zip(lines, text_and_ids):
       result = json.loads(result_text)
       label_list = []
       for start, end, label in result["labels"]:

@@ -1,3 +1,32 @@
+"""Script to check if input json file is correctly formatted for features.
+
+  The input file should be in json format:
+
+  [
+    {
+      "review_text": "This is the first review. This is the second sentence of the first review.",
+      "tokenized_review_text": [
+          "This is the first review.",
+          "This is the second sentence of the first review."],
+      "review_id": "review_id_1"
+    },
+    {
+      "review_text": "This is the second review. This is the second sentence of the second review.",
+      "tokenized_review_text": [
+          "This is the second review.",
+          "This is the second sentence of the second review."],
+      "review_id": "review_id_2"
+    },
+  ]
+
+  Args:
+    annotation_file: Input json file.
+
+  Output:
+    Prints approval message or location of first error.
+"""
+
+
 import argparse
 import json
 
@@ -9,6 +38,15 @@ parser.add_argument('-a',
 
 
 def check_item(index, item):
+  """Check the format of an item representing the text of a single review.
+
+    Args:
+      index: Index of this item in the input file (for error message).
+      item: json-formatted object representing single item.
+
+    Returns:
+      True if item is correctly formatted, False otherwise.
+  """
   if 'review_id' not in item:
     print("Item {0} is missing the review_id field".format(index))
     return False

@@ -1,3 +1,12 @@
+"""Script to prepare sentence for aspect labeling in ReviewAdvisor.
+
+  TODO(NNK): Figure out why this newline replacement thing is required.
+
+  Args:
+    sys.argv[1]: input json file (correctly formatted)
+    sys.argv[2]: output file location
+"""
+
 import json
 import sys
 
