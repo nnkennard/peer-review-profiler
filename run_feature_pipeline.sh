@@ -35,5 +35,10 @@ python generate_features/02_generate_argument_labels.py \
 
 echo "Generating specificity labels"
 bash generate_features/03_generate_specificity_labels.sh \
-	$input_file ${run_name}
+	$input_file $run_name
+
+echo "Generating politeness labels"
+python generate_features/04_generate_politeness_labels.py \
+	-i $input_file -o $run_name
+
 

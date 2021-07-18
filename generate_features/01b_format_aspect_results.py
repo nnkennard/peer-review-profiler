@@ -4,22 +4,18 @@ import json
 
 parser = argparse.ArgumentParser(
     description='Clean and anonymize annotation data')
-parser.add_argument(
-    '-i',
-    '--input_file',
-    type=str,
-    help='JSON file with review text to annotate with aspects')
-parser.add_argument(
-    '-r',
-    '--result_file',
-    type=str,
-    help='result.jsonl file produced by ReviewAdvisor tagger')
-parser.add_argument(
-    '-o',
-    '--output_dir',
-    type=str,
-    help='Output directory for this run')
-
+parser.add_argument('-i',
+                    '--input_file',
+                    type=str,
+                    help='JSON file with review text to annotate with aspects')
+parser.add_argument('-r',
+                    '--result_file',
+                    type=str,
+                    help='result.jsonl file produced by ReviewAdvisor tagger')
+parser.add_argument('-o',
+                    '--output_dir',
+                    type=str,
+                    help='Output directory for this run')
 
 
 def main():
@@ -40,8 +36,7 @@ def main():
       label_list = []
       for start, end, label in result["labels"]:
         label_list.append((label, result["text"][start:end]))
-      aspect_features[review_id] = label_list
-
+      aspect_features[review_id] = {"aspect_spans": label_list}
 
   with open(args.output_dir + "/aspect_features.json", 'w') as f:
     json.dump(aspect_features, f)
@@ -49,4 +44,3 @@ def main():
 
 if __name__ == "__main__":
   main()
-

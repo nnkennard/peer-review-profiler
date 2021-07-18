@@ -21,3 +21,6 @@ mv glove.840B.300d.txt models/specificity
 
 mkdir -p models/argument
 # ??? Where to get the SciBert model???
+
+# This is for Convokit
+python -m spacy download en_core_web_sm

@@ -1,6 +1,4 @@
 import argparse
-import csv
-import sys
 import json
 
 parser = argparse.ArgumentParser(
@@ -10,12 +8,10 @@ parser.add_argument(
     '--input_file',
     type=str,
     help='JSON file with review text to annotate with specificity')
-parser.add_argument(
-    '-o',
-    '--output_dir',
-    type=str,
-    help='Output directory for temp files')
-
+parser.add_argument('-o',
+                    '--output_dir',
+                    type=str,
+                    help='Output directory for temp files')
 
 
 def main():
@@ -31,27 +27,19 @@ def main():
   for example in obj:
     review_id = example["review_id"]
     for i, sentence in enumerate(example["tokenized_review_text"]):
-      sentences.append({"sent_text":sentence})
-      sentence_provenances.append({
-        "review_id": review_id,
-        "sentence_index":i
-      })
+      sentences.append(sentence)
+      sentence_provenances.append([review_id, i])
 
-  with open(args.output_dir + "/specificity_provenances.csv", 'w') as f:
-    w = csv.DictWriter(f, fieldnames=["review_id", "sentence_index"])
-    w.writeheader()
-    for row in sentence_provenances:
-      w.writerow(row)
+  with open(args.output_dir + "/specificity_provenances.json", 'w') as f:
+    json.dump(sentence_provenances, f)
 
-  with open(args.output_dir + "/twitters.csv", 'w') as s_file:
-    with open(args.output_dir + "/twitteru.csv", 'w') as u_file:
-      s_writer = csv.DictWriter(s_file, fieldnames=["sent_text"])
-      u_writer = csv.DictWriter(u_file, fieldnames=["sent_text"])
-      for writer in [s_writer, u_writer]:
-        writer.writeheader()
+  with open(args.output_dir + "/twitters.txt", 'w') as s_file:
+    with open(args.output_dir + "/twitter.txt", 'w') as u_file:
+      for handle in [s_file, u_file]:
+        handle.write("sent_text\n")
         for sentence in sentences:
-          writer.writerow(sentence)
+          handle.write(sentence + "\n")
+
 
 if __name__ == "__main__":
   main()
-

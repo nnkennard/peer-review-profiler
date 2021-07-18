@@ -21,12 +21,7 @@ parser.add_argument('-m',
                     '--model',
                     type=str,
                     help='Pretrained SciBERT checkpoint')
-parser.add_argument(
-    '-o',
-    '--output_dir',
-    type=str,
-    help='Output JSON file')
-
+parser.add_argument('-o', '--output_dir', type=str, help='Output JSON file')
 
 ARGUMENT_LABEL_LIST = "fact evaluation request reference non-arg quote".split()
 SCIBERT_BASE = "allenai/scibert_scivocab_uncased"
@@ -95,7 +90,8 @@ def get_argument_features(examples, scibert_ckpt):
   for p in probs:
     labels.append(ARGUMENT_LABEL_LIST[np.argmax(p)])
 
-  label_sequence_builder = collections.defaultdict(lambda : collections.defaultdict())
+  label_sequence_builder = collections.defaultdict(
+      lambda: collections.defaultdict())
   for key, label in zip(keys, labels):
     review_id, index = retrieve_from_sentence_key(key)
     label_sequence_builder[review_id][index] = label
@@ -104,7 +100,8 @@ def get_argument_features(examples, scibert_ckpt):
   for review_id, labels in label_sequence_builder.items():
     assert list(sorted(labels.keys())) == list(range(len(labels)))
     features[review_id] = {
-    "argument_labels":[labels[i] for i in sorted(labels.keys())]}
+        "argument_labels": [labels[i] for i in sorted(labels.keys())]
+    }
 
   return features
 
@@ -112,18 +109,18 @@ def get_argument_features(examples, scibert_ckpt):
 def create_sentence_key(review_id, index):
   return "{0}|||{1}".format(review_id, index)
 
+
 def retrieve_from_sentence_key(sentence_key):
   review_id, index = sentence_key.split("|||")
   return review_id, int(index)
+
 
 def get_example_tuples(file_example_list):
   example_tuples = []
   for example in file_example_list:
     for i, sentence in enumerate(example["tokenized_review_text"]):
-      example_tuples.append(
-        (create_sentence_key(example["review_id"], i),
-        sentence)
-      )
+      example_tuples.append((create_sentence_key(example["review_id"],
+                                                 i), sentence))
   return example_tuples
 
 
@@ -131,21 +128,9 @@ def main():
 
   args = parser.parse_args()
 
-  if args.input_file is None and args.input_dir is None:
-    print("Please enter an input file or input directory.")
-    exit
-
-  if args.input_file is not None:
-    assert args.input_dir is None
-    input_files = [args.input_file]
-  else:
-    assert args.input_dir is not None
-    input_files = glob.glob(args.input_dir + "/*.json")
-
   example_list = []
-  for input_file in input_files:
-    with open(input_file, 'r') as f:
-      example_list += get_example_tuples(json.load(f))
+  with open(args.input_file, 'r') as f:
+    example_list += get_example_tuples(json.load(f))
 
   argument_features = get_argument_features(example_list, args.model)
 

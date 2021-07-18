@@ -2,13 +2,12 @@
 
 python generate_features/03a_prep_specificity_input.py -i  $1 -o $2
 
-mv $2/twitter*  Domain-Agnostic-Sentence-Specificity-Prediction/
+cp $2/twitter*  Domain-Agnostic-Sentence-Specificity-Prediction/dataset/data
 
 cd  Domain-Agnostic-Sentence-Specificity-Prediction/
 python train.py --gpu_id 0 --test_data twitter
 python test.py --gpu_id 0 --test_data twitter 
-mv  predictions.txt ../$2
-cd ../$2
+mv  predictions.txt ../$2/specificity_predictions.txt
+cd ../
 
-head predictions.txt
-head specificity_provenances.csv
+python generate_features/03b_consolidate_specificity_output.py -d $2
