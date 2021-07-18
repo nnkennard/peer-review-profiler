@@ -70,6 +70,8 @@ def main():
     for review_id, features in get_feature_obj(args.run_directory, feature_name).items():
       overall_features[review_id].update(TRANSFORM_MAP[feature_name](features))
 
+  print(args.run_directory + "/final_features.json")
+
   with open(args.run_directory + "/final_features.json", 'w') as f:
     json.dump(overall_features, f)
 
