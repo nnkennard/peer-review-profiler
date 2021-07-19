@@ -1,8 +1,10 @@
+"""Prepare input for specificity model."""
+
 import argparse
 import json
 
 parser = argparse.ArgumentParser(
-    description='Clean and anonymize annotation data')
+    description='Prepare input for specificity model')
 parser.add_argument(
     '-i',
     '--input_file',
@@ -33,6 +35,8 @@ def main():
   with open(args.output_dir + "/specificity_provenances.json", 'w') as f:
     json.dump(sentence_provenances, f)
 
+  # We have these twitter files in order to be similar to the original names
+  # in the specificity model
   with open(args.output_dir + "/twitters.txt", 'w') as s_file:
     with open(args.output_dir + "/twitter.txt", 'w') as u_file:
       for handle in [s_file, u_file]:

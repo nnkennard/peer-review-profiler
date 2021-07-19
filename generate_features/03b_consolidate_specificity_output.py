@@ -1,3 +1,4 @@
+"""Consolidate output of specificity model."""
 import argparse
 import collections
 import csv
@@ -5,7 +6,7 @@ import json
 from torch import tensor
 
 parser = argparse.ArgumentParser(
-    description='Clean and anonymize annotation data')
+    description='Consolidate output of specificity model.')
 parser.add_argument('-d', '--dir_name', type=str, help='Directory for this run')
 
 
@@ -15,11 +16,10 @@ def main():
 
   provenances = []
   with open(args.dir_name + "/specificity_provenances.json", 'r') as f:
-    provenances = json.load(f) 
+    provenances = json.load(f)
 
   with open(args.dir_name + "/specificity_predictions.txt", 'r') as f:
     values = [eval(line).item() for line in f]
-
 
   obj_builder = collections.defaultdict(dict)
   for (review_id, sentence_idx), value in zip(provenances, values):
@@ -31,7 +31,6 @@ def main():
     range(len(specificities)))
     final_builder[review_id] = {"specificities":[specificities[i] for i in
     range(len(specificities))]}
-
 
   with open(args.dir_name + "/specificity_features.json", 'w') as f:
     json.dump(final_builder, f)

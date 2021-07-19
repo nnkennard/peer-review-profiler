@@ -21,8 +21,10 @@ from tqdm import tqdm
 import transformers
 from torch.utils.data import DataLoader, SequentialSampler, TensorDataset
 
+import pipeline_lib
+
 parser = argparse.ArgumentParser(
-    description='Clean and anonymize annotation data')
+    description='Generate argument labels using AMPERE dataset.')
 parser.add_argument(
     '-f',
     '--input_file',
@@ -34,15 +36,22 @@ parser.add_argument('-m',
                     help='Pretrained SciBERT checkpoint')
 parser.add_argument('-o', '--output_dir', type=str, help='Output JSON file')
 
-ARGUMENT_LABEL_LIST = "fact evaluation request reference non-arg quote".split()
 SCIBERT_BASE = "allenai/scibert_scivocab_uncased"
 
-
 def get_model_and_tokenizer(scibert_ckpt, device):
+  """Load model from checkpoint and initialize tokenizer.
+
+    Args:
+      scibert_ckpt: path to SciBERT model checkpoint
+      device: device for torch
+
+    Returns:
+      Classification model and tokenizer.
+  """
 
   model = transformers.BertForSequenceClassification.from_pretrained(
       SCIBERT_BASE,
-      num_labels=6,
+      num_labels=len(pipeline_lib.ArgumentType.ALL),
       output_attentions=False,
       output_hidden_states=False)
 
@@ -59,6 +68,13 @@ def get_model_and_tokenizer(scibert_ckpt, device):
 def get_argument_features(examples, scibert_ckpt):
   """
     Runs the trained argument models in evaluation mode
+    
+    Args:
+      examples: List of examples in json format
+      scibert_ckpt: path to SciBERT model checkpoint
+
+    Returns:
+      A map from review ids to a list of argument features for each
   """
   keys, review_texts = zip(*examples)
 
@@ -99,10 +115,11 @@ def get_argument_features(examples, scibert_ckpt):
 
   labels = []
   for p in probs:
-    labels.append(ARGUMENT_LABEL_LIST[np.argmax(p)])
+    labels.append(pipeline_lib.ArgumentType.ALL[np.argmax(p)])
 
   label_sequence_builder = collections.defaultdict(
       lambda: collections.defaultdict())
+
   for key, label in zip(keys, labels):
     review_id, index = retrieve_from_sentence_key(key)
     label_sequence_builder[review_id][index] = label
@@ -127,6 +144,16 @@ def retrieve_from_sentence_key(sentence_key):
 
 
 def get_example_tuples(file_example_list):
+  """Get tuples for argument input from example list.
+
+    Args:
+      file_example_list: JSON list of examples
+
+    Returns:
+      A list of (sentence_key, sentence) tuples
+        where sentence key is of the format review_id|||sentence_index
+  """
+
   example_tuples = []
   for example in file_example_list:
     for i, sentence in enumerate(example["tokenized_review_text"]):

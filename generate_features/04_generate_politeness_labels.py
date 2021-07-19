@@ -1,13 +1,13 @@
+"""Generate politeness labels using Convokit."""
+
 import argparse
 import json
 
-print("Starting Convokit import")
 from convokit import Speaker, Utterance, Corpus, TextParser, PolitenessStrategies
 
-print("Finished Convokit import")
 
 parser = argparse.ArgumentParser(
-    description='Clean and anonymize annotation data')
+    description='Generate politeness labels using Convokit.')
 parser.add_argument(
     '-i',
     '--input_file',
