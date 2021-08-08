@@ -34,7 +34,7 @@ python generate_features/02_generate_argument_labels.py \
 	-f $input_file -m models/argument/SciBert.model \
 	-o ${run_name}
 
-source deactivate
+deactivate
 source ve_specificity/bin/activate
 
 echo "Generating specificity labels"
