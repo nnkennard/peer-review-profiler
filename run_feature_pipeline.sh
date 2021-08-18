@@ -41,8 +41,12 @@ echo "Generating politeness labels"
 python generate_features/04_generate_politeness_labels.py \
 	-i $input_file -o $run_name
 
+echo "Generating combination scores"
+python generate_features/05_generate_combined_feature.py \
+   -d $run_name
+
 echo "Consolidating and transforming features"
-python generate_features/05_consolidate_features.py \
+python generate_features/06_consolidate_features.py \
 	 -d $run_name
 
 

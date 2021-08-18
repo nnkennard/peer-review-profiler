@@ -12,6 +12,12 @@ class FeatureType(object):
   ASPECT = "aspect"
   POLITENESS = "politeness"
   SPECIFICITY = "specificity"
-  ALL = [ARGUMENT, ASPECT, POLITENESS, SPECIFICITY]
+  COMBINED = "combined"
+  ALL = [ARGUMENT, ASPECT, POLITENESS, SPECIFICITY, COMBINED]
+
+class CombinedFeatureType(object):
+  ARGUMENT = "argument"
+  SPECIFICITY = "specificity"
+  ALL = [ARGUMENT, SPECIFICITY]
 
 

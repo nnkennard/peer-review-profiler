@@ -46,11 +46,18 @@ def central_tendencies(values, name):
 def transform_specificity(features):
   return central_tendencies(features["specificities"], "specificity")
 
+def add_scores(scores):
+  return {"combined_score": round(sum(scores), 5)}
+
+def transform_combined_score(features):
+  return add_scores(features["combination_score"])
+
 TRANSFORM_MAP = {
   pipeline_lib.FeatureType.ARGUMENT: transform_argument,
   pipeline_lib.FeatureType.ASPECT: transform_aspect,
   pipeline_lib.FeatureType.POLITENESS: lambda x:x,
   pipeline_lib.FeatureType.SPECIFICITY: transform_specificity,
+  pipeline_lib.FeatureType.COMBINED: transform_combined_score
 }
 
 def get_feature_obj(dir_name, feature_type):
