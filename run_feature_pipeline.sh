@@ -1,5 +1,6 @@
 #!/bin/bash
 
+source ve/bin/activate
 input_file="final_annotated.json"
 run_name="run0"
  
@@ -32,6 +33,9 @@ echo "Generating argument labels"
 python generate_features/02_generate_argument_labels.py \
 	-f $input_file -m models/argument/SciBert.model \
 	-o ${run_name}
+
+deactivate
+source ve_specificity/bin/activate
 
 echo "Generating specificity labels"
 bash generate_features/03_generate_specificity_labels.sh \
