@@ -45,5 +45,8 @@ echo "Consolidating and transforming features"
 python generate_features/05_consolidate_features.py \
 	 -d $run_name
 
-
+echo "Analyzing features"
+python generate_features/06_correlation_with_quality.py \
+   -a 'data/final_annotated.json' \
+   -d $run_name -c 'overall'
 
