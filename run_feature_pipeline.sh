@@ -27,7 +27,7 @@ mkdir ${run_name}
 source ve/bin/activate
 
 echo "Checking input file"
-python generate_features/00_check_input_file.py -a $input_file -o ${run_name}
+python generate_features/00_check_and_prep_input_file.py -a $input_file -o ${run_name}
 
 echo "Generating aspect labels"
 bash generate_features/01_generate_aspect_labels.sh \
