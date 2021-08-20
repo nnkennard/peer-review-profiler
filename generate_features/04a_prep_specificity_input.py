@@ -25,7 +25,7 @@ def main():
 
   for example in obj:
     review_id = example["review_id"]
-    for i, sentence in enumerate(example["tokenized_review_text"]):
+    for i, sentence in enumerate(example["review_sentences"]):
       sentences.append(sentence)
       sentence_provenances.append([review_id, i])
 

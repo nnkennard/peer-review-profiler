@@ -69,13 +69,13 @@ def check_item(index, item):
     print(("The value of review_text field should be a string; "
            "check item {0}").format(index))
     return None
-  elif 'tokenized_review_text' not in item:
+  elif 'review_sentences' not in item:
     tokenized_sentences = sent_tokenize(item["review_text"])
     assert type(tokenized_sentences) == list and all(type(x) == str for x in tokenized_sentences)
     item.update({"review_sentences" : tokenized_sentences})
     return item
-  elif not all(type(i) == str for i in item['tokenized_review_text']):
-    print(("The value of tokenized_review_text field should be a list "
+  elif not all(type(i) == str for i in item['review_sentences']):
+    print(("The value of review_sentences field should be a list "
            "of strings; check item {0}").format(index))
     return None
 

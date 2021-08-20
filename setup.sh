@@ -17,8 +17,8 @@ create_virtualenv() {
 
 }
 
-create_virtualenv python3/3.9.0-2010 ve requirements.txt
-create_virtualenv python3/3.7.3-1904 specificity_ve requirements_specificity.txt
+#create_virtualenv python3/3.9.0-2010 ve requirements.txt
+#create_virtualenv python3/3.7.3-1904 specificity_ve requirements_specificity.txt
 
 #git submodule update --init --recursive
 #git submodule update --init --recursive # I don't know if these needs to be run twice? But I've had to
@@ -42,20 +42,18 @@ create_virtualenv python3/3.7.3-1904 specificity_ve requirements_specificity.txt
 #wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1-6QMv3NahTukRniYyc_RGBkWzxrkyDTw' -O 'SciBert.model'
 #cd ../../
 
-# This is for Convokit
-python -m spacy download en_core_web_sm
 
+# This is for Convokit
+module load python3/3.9.0-2010
+source ve/bin/activate
+python -m spacy download en_core_web_sm
 deactivate
 
 # Specificity preparation
 
-python3 -m venv ve_specificity
-source ve_specificity/bin/activate
-python -m pip install --upgrade pip
-python -m pip install -r requirements_specificity.txt
-
-#cp unlabeled_specificity/twitter* Domain-Agnostic-Sentence-Specificity-Prediction/
-#cd  Domain-Agnostic-Sentence-Specificity-Prediction/
-#python train.py --gpu_id 0 --test_data twitter
-
+module load python3/3.7.3-1904
+source specificity_ve/bin/activate
+cp unlabeled_specificity/twitter* Domain-Agnostic-Sentence-Specificity-Prediction/
+cd  Domain-Agnostic-Sentence-Specificity-Prediction/
+python train.py --gpu_id 0 --test_data twitter
 deactivate

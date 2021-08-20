@@ -151,7 +151,7 @@ def get_example_tuples(file_example_list):
 
   example_tuples = []
   for example in file_example_list:
-    for i, sentence in enumerate(example["tokenized_review_text"]):
+    for i, sentence in enumerate(example["review_sentences"]):
       example_tuples.append((create_sentence_key(example["review_id"],
                                                  i), sentence))
   return example_tuples
