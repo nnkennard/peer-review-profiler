@@ -5,14 +5,10 @@ import json
 
 from convokit import Speaker, Utterance, Corpus, TextParser, PolitenessStrategies
 
+import pipeline_lib
 
 parser = argparse.ArgumentParser(
     description='Generate politeness labels using Convokit.')
-parser.add_argument(
-    '-i',
-    '--input_file',
-    type=str,
-    help='JSON file with review text to annotate with arguments')
 parser.add_argument('-o', '--output_dir', type=str, help='Output JSON file')
 
 
@@ -28,7 +24,7 @@ def main():
   ps = PolitenessStrategies()
 
   overall_features = {}
-  with open(args.input_file, 'r') as f:
+  with open(pipeline_lib.get_input_file_name(args.output_dir), 'r') as f:
     obj = json.load(f)
     for example in obj:
       review_id = example["review_id"]

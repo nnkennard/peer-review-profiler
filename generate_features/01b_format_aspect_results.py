@@ -5,12 +5,10 @@ import argparse
 import collections
 import json
 
+import pipeline_lib
+
 parser = argparse.ArgumentParser(
     description='Consolidate features from ReviewAdvisor')
-parser.add_argument('-i',
-                    '--input_file',
-                    type=str,
-                    help='Original JSON file used to generate aspect features.')
 parser.add_argument('-r',
                     '--result_file',
                     type=str,
@@ -25,7 +23,7 @@ def main():
   args = parser.parse_args()
 
   text_and_ids = []
-  with open(args.input_file, 'r') as f:
+  with open(pipeline_lib.get_input_file_name(args.output_dir), 'r') as f:
     input_obj = json.load(f)
     for x in input_obj:
       text_and_ids.append((x["review_text"], x["review_id"]))

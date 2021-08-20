@@ -25,11 +25,6 @@ import pipeline_lib
 
 parser = argparse.ArgumentParser(
     description='Generate argument labels using AMPERE dataset.')
-parser.add_argument(
-    '-f',
-    '--input_file',
-    type=str,
-    help='JSON file with review text to annotate with arguments')
 parser.add_argument('-m',
                     '--model',
                     type=str,
@@ -167,7 +162,7 @@ def main():
   args = parser.parse_args()
 
   example_list = []
-  with open(args.input_file, 'r') as f:
+  with open(pipeline_lib.get_input_file_name(args.output_dir), 'r') as f:
     example_list += get_example_tuples(json.load(f))
 
   argument_features = get_argument_features(example_list, args.model)

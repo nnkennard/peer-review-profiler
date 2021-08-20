@@ -27,38 +27,38 @@ mkdir ${run_name}
 source ve/bin/activate
 
 echo "Checking input file"
-python generate_features/00_check_input_file.py -a $input_file
+python generate_features/00_check_input_file.py -a $input_file -o ${run_name}
 
 echo "Generating aspect labels"
 bash generate_features/01_generate_aspect_labels.sh \
-	$input_file ${run_name}
+	${run_name}
 
 echo "Generating argument labels"
 python generate_features/02_generate_argument_labels.py \
-	-f $input_file -m models/argument/SciBert.model \
+	-m models/argument/SciBert.model \
 	-o ${run_name}
 
 echo "Generating politeness labels"
-python generate_features/04_generate_politeness_labels.py \
-	-i $input_file -o $run_name
+python generate_features/03_generate_politeness_labels.py \
+	-o $run_name
 
 deactivate
 source specificity_ve/bin/activate
 
 echo "Generating specificity labels"
-bash generate_features/03_generate_specificity_labels.sh \
-	$input_file $run_name
+bash generate_features/04_generate_specificity_labels.sh \
+	$run_name
 
 deactivate
 source ve/bin/activate
 
 echo "Generating length features"
 python generate_features/05_generate_length_features.py \
-	-i $input_file -o $run_name
+	-o $run_name
 
 echo "Consolidating and transforming features"
 python generate_features/06_consolidate_features.py \
-	 -d $run_name
+	-d $run_name
 
 echo "Analyzing features"
 python generate_features/07_correlation_with_quality.py \

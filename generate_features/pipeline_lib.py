@@ -16,3 +16,5 @@ class FeatureType(object):
   ALL = [ARGUMENT, ASPECT, POLITENESS, SPECIFICITY, LENGTH]
 
 
+def get_input_file_name(run_dir):
+  return run_dir + "/input.json"

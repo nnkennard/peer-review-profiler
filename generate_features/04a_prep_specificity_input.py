@@ -3,13 +3,10 @@
 import argparse
 import json
 
+import pipeline_lib
+
 parser = argparse.ArgumentParser(
     description='Prepare input for specificity model')
-parser.add_argument(
-    '-i',
-    '--input_file',
-    type=str,
-    help='JSON file with review text to annotate with specificity')
 parser.add_argument('-o',
                     '--output_dir',
                     type=str,
@@ -20,7 +17,7 @@ def main():
 
   args = parser.parse_args()
 
-  with open(args.input_file, 'r') as f:
+  with open(pipeline_lib.get_input_file_name(args.output_dir), 'r') as f:
     obj = json.load(f)
 
   sentence_provenances = []

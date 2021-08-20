@@ -10,5 +10,5 @@ bash post_process.sh
 
 cd ../../
 
-python generate_features/01b_format_aspect_results.py -i $1 -r ReviewAdvisor/tagger/result.jsonl -o $2
+python generate_features/01b_format_aspect_results.py -r ReviewAdvisor/tagger/result.jsonl -o $1
 
