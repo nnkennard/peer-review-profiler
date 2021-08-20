@@ -51,6 +51,7 @@ TRANSFORM_MAP = {
   pipeline_lib.FeatureType.ASPECT: transform_aspect,
   pipeline_lib.FeatureType.POLITENESS: lambda x:x,
   pipeline_lib.FeatureType.SPECIFICITY: transform_specificity,
+  pipeline_lib.FeatureType.LENGTH: lambda x:x,
 }
 
 def get_feature_obj(dir_name, feature_type):

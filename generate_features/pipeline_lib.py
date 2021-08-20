@@ -12,6 +12,7 @@ class FeatureType(object):
   ASPECT = "aspect"
   POLITENESS = "politeness"
   SPECIFICITY = "specificity"
-  ALL = [ARGUMENT, ASPECT, POLITENESS, SPECIFICITY]
+  LENGTH = "length"
+  ALL = [ARGUMENT, ASPECT, POLITENESS, SPECIFICITY, LENGTH]
 
 
