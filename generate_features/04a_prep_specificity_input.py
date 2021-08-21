@@ -35,7 +35,7 @@ def main():
   # We have these twitter files in order to be similar to the original names
   # in the specificity model
   with open(args.output_dir + "/twitters.txt", 'w') as s_file:
-    with open(args.output_dir + "/twitter.txt", 'w') as u_file:
+    with open(args.output_dir + "/twitteru.txt", 'w') as u_file:
       for handle in [s_file, u_file]:
         handle.write("sent_text\n")
         for sentence in sentences:

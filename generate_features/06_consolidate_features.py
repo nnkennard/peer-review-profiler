@@ -65,6 +65,8 @@ def main():
   overall_features = collections.defaultdict(dict)
 
   for feature_name in pipeline_lib.FeatureType.ALL:
+    if feature_name == pipeline_lib.FeatureType.SPECIFICITY:
+      continue
     for review_id, features in get_feature_obj(args.run_directory, feature_name).items():
       overall_features[review_id].update(TRANSFORM_MAP[feature_name](features))
 
