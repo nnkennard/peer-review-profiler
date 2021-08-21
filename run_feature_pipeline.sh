@@ -47,8 +47,8 @@ deactivate
 source specificity_ve/bin/activate
 
 echo "Generating specificity labels"
-#bash generate_features/04_generate_specificity_labels.sh \
-#	$run_name
+bash generate_features/04_generate_specificity_labels.sh \
+	$run_name
 
 deactivate
 source ve/bin/activate

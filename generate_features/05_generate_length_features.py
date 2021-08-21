@@ -20,7 +20,7 @@ def main():
   with open(pipeline_lib.get_input_file_name(args.output_dir), 'r') as f:
     obj = json.load(f)
     for example in obj:
-      overall_features["review_id"] = {
+      overall_features[example["review_id"]] = {
         "num_sentences": len(example["review_sentences"]),
         "num_tokens": sum(len(word_tokenize(sent)) for sent in example["review_sentences"])
       }
