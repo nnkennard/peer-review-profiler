@@ -38,6 +38,7 @@ python generate_features/02_generate_argument_labels.py \
 	-m models/argument/SciBert.model \
 	-o ${run_name}
 
+
 echo "Generating politeness labels"
 python generate_features/03_generate_politeness_labels.py \
 	-o $run_name
@@ -46,8 +47,8 @@ deactivate
 source specificity_ve/bin/activate
 
 echo "Generating specificity labels"
-bash generate_features/04_generate_specificity_labels.sh \
-	$run_name
+#bash generate_features/04_generate_specificity_labels.sh \
+#	$run_name
 
 deactivate
 source ve/bin/activate

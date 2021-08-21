@@ -44,16 +44,16 @@ create_virtualenv() {
 
 
 # This is for Convokit
-module load python3/3.9.0-2010
-source ve/bin/activate
-python -m spacy download en_core_web_sm
-deactivate
+#module load python3/3.9.0-2010
+#source ve/bin/activate
+#python -m spacy download en_core_web_sm
+#deactivate
 
 # Specificity preparation
 
 module load python3/3.7.3-1904
 source specificity_ve/bin/activate
-cp unlabeled_specificity/twitter* Domain-Agnostic-Sentence-Specificity-Prediction/
+cp unlabeled_specificity/twitter* Domain-Agnostic-Sentence-Specificity-Prediction/dataset/data
 cd  Domain-Agnostic-Sentence-Specificity-Prediction/
 python train.py --gpu_id 0 --test_data twitter
 deactivate
