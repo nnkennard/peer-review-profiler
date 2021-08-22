@@ -53,6 +53,7 @@ deactivate
 
 module load python3/3.7.3-1904
 source specificity_ve/bin/activate
+rm Domain-Agnostic-Sentence-Specificity-Prediction/dataset/data/twitter*
 cp unlabeled_specificity/twitter* Domain-Agnostic-Sentence-Specificity-Prediction/dataset/data
 touch  Domain-Agnostic-Sentence-Specificity-Prediction/dataset/data/twitterl.txt
 touch  Domain-Agnostic-Sentence-Specificity-Prediction/dataset/data/twitterv.txt
