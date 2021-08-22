@@ -32,7 +32,9 @@
 
 import argparse
 import json
-from nltk.tokenize import sent_tokenize
+#from nltk.tokenize import sent_tokenize
+import nltk
+import re
 
 import pipeline_lib
 
@@ -43,6 +45,24 @@ parser.add_argument('-a',
                     help='Input json file to check')
 parser.add_argument('-o', '--output_dir', type=str, help='Output JSON file')
 
+PRE_TOKENIZATION_REGEXES = [
+(r'\n', ' '),
+(r'(\d)(?:\.) ', '\g<1>, '),
+(r'((\b\w)+)(?:\.)', '\g<1> '),
+(r'(?i)etc.', 'etc'),
+(r'(?i)eqn.', 'eqn'),
+(r'(?i)eq.', 'eq'),
+(r'(?i)fig.', 'fig'),
+(r'(?i)sec.', 'sec'),
+(r'al.', 'al'),
+(r' +', ' '),
+]
+
+
+def sentence_separate(text):
+  for regex, replacement in PRE_TOKENIZATION_REGEXES:
+    text = re.sub(regex, replacement, text)
+  return nltk.sent_tokenize(text)
 
 
 def check_item(index, item):
@@ -70,7 +90,7 @@ def check_item(index, item):
            "check item {0}").format(index))
     return None
   elif 'review_sentences' not in item:
-    tokenized_sentences = sent_tokenize(item["review_text"])
+    tokenized_sentences = sentence_separate(item["review_text"])
     assert type(tokenized_sentences) == list and all(type(x) == str for x in tokenized_sentences)
     item.update({"review_sentences" : tokenized_sentences})
     return item
