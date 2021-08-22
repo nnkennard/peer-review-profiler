@@ -47,6 +47,7 @@ cd ../../
 module load python3/3.9.0-2010
 source ve/bin/activate
 python -m spacy download en_core_web_sm
+python -c "import nltk; nltk.download('punkt')"
 deactivate
 
 # Specificity preparation

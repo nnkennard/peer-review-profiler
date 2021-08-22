@@ -32,13 +32,10 @@
 
 import argparse
 import json
-#from nltk.tokenize import sent_tokenize
 import nltk
 import re
 
 import pipeline_lib
-
-nltk.download('punkt')
 
 parser = argparse.ArgumentParser(description='Check json input for pipeline')
 parser.add_argument('-a',
