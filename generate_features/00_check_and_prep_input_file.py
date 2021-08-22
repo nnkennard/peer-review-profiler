@@ -38,6 +38,8 @@ import re
 
 import pipeline_lib
 
+nltk.download('punkt')
+
 parser = argparse.ArgumentParser(description='Check json input for pipeline')
 parser.add_argument('-a',
                     '--annotation_file',
