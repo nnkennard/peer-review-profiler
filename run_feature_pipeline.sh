@@ -57,12 +57,16 @@ echo "Generating length features"
 python generate_features/05_generate_length_features.py \
 	-o $run_name
 
+echo "Generating combination scores"
+python generate_features/06_generate_combined_feature.py \
+   -d $run_name
+
 echo "Consolidating and transforming features"
-python generate_features/06_consolidate_features.py \
+python generate_features/07_consolidate_features.py \
 	-d $run_name
 
 echo "Analyzing features"
-python generate_features/07_correlation_with_quality.py \
+python generate_features/08_correlation_with_quality.py \
    -a 'data/final_annotated.json' \
    -d $run_name -c 'overall'
 

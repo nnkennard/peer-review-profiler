@@ -13,8 +13,13 @@ class FeatureType(object):
   POLITENESS = "politeness"
   SPECIFICITY = "specificity"
   LENGTH = "length"
-  ALL = [ARGUMENT, ASPECT, POLITENESS, SPECIFICITY, LENGTH]
+  COMBINED = "combined"
+  ALL = [ARGUMENT, ASPECT, POLITENESS, SPECIFICITY, LENGTH, COMBINED]
 
+class CombinedFeatureType(object):
+  ARGUMENT = "argument"
+  SPECIFICITY = "specificity"
+  ALL = [ARGUMENT, SPECIFICITY]
 
 def get_input_file_name(run_dir):
   return run_dir + "/input.json"
