@@ -70,6 +70,8 @@ python generate_features/08_correlation_with_quality.py \
    -a 'data/final_annotated.json' \
    -d $run_name -c 'overall'
 
+mkdir plots
+
 echo "Plotting heatmaps"
 python generate_features/09_plot_heatmaps.py \
    -d $run_name
