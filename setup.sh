@@ -37,8 +37,10 @@ unzip glove.840B.300d.zip
 rm glove.840B.300d.zip
 mv glove.840B.300d.txt Domain-Agnostic-Sentence-Specificity-Prediction
 
+cd models/argument/
 unzip SciBert.model.zip
 rm SciBert.model.zip
+cd ../../
 
 # This is for Convokit
 module load python3/3.9.0-2010
