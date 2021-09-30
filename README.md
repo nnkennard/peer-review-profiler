@@ -19,16 +19,18 @@ This requires an input json file with the format:
 [
   {
     "review_text": "This is the first review. This is the second sentence of the first review.",
-    "tokenized_review_text": ["This is the first review.", "This is the second sentence of the first review."],
+    "review_sentences": ["This is the first review.", "This is the second sentence of the first review."],
     "review_id": "review_id_1"
   },
   {
     "review_text": "This is the second review.",
-    "tokenized_review_text": ["This is the second review.", "This is the second sentence of the second review."],
+    "review_sentences": ["This is the second review.", "This is the second sentence of the second review."],
     "review_id": "review_id_2"
   },
 ]
 ```
+
+The `tokenized_review_text` field is optional. If not supplied, the sentences in review_text are separated using NLTK.
 
 
 ## Analysis
