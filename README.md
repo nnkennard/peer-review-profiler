@@ -63,3 +63,5 @@ bash run_feature_pipeline.sh -i [input_json_file] -r [run_name]
 Name the run something that will help identify which input json file was used. The generated features will be found in a `[run_name]/final_features.json`.
 
 The generated correlation scores between features and review quality will be found in `[run_name]/correlations.json`.
+
+Heatmaps to interpret feature importance will be found in `[run_name]/plots/`.
