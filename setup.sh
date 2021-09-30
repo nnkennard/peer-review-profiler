@@ -37,14 +37,16 @@ unzip glove.840B.300d.zip
 rm glove.840B.300d.zip
 mv glove.840B.300d.txt Domain-Agnostic-Sentence-Specificity-Prediction
 
+
+# This is for Convokit and Scibert
+module load python3/3.9.0-2010
+source ve/bin/activate
+
 mkdir -p models/argument
 cd models/argument
 gdown https://drive.google.com/uc?id=1pd6wJ8A9xzWbS1--6iZ6E-b_1ZpxD37m
 cd ../../
 
-# This is for Convokit
-module load python3/3.9.0-2010
-source ve/bin/activate
 python -m spacy download en_core_web_sm
 python -c "import nltk; nltk.download('punkt')"
 deactivate
