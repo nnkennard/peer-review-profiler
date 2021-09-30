@@ -37,9 +37,9 @@ unzip glove.840B.300d.zip
 rm glove.840B.300d.zip
 mv glove.840B.300d.txt Domain-Agnostic-Sentence-Specificity-Prediction
 
-cd models/argument/
-unzip SciBert.model.zip
-rm SciBert.model.zip
+mkdir -p models/argument
+cd models/argument
+gdown https://drive.google.com/uc?id=1pd6wJ8A9xzWbS1--6iZ6E-b_1ZpxD37m
 cd ../../
 
 # This is for Convokit
