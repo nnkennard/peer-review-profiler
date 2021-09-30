@@ -20,40 +20,20 @@ This requires an input json file with the format:
   {
     "review_text": "This is the first review. This is the second sentence of the first review.",
     "review_sentences": ["This is the first review.", "This is the second sentence of the first review."],
-    "review_id": "review_id_1"
+    "review_id": "review_id_1",
+    "score": 1.0,
   },
   {
     "review_text": "This is the second review.",
     "review_sentences": ["This is the second review.", "This is the second sentence of the second review."],
-    "review_id": "review_id_2"
+    "review_id": "review_id_2",
+    "score": 3.5,
   },
 ]
 ```
 
 The `tokenized_review_text` field is optional. If not supplied, the sentences in review_text are separated using NLTK.
-
-
-## Analysis
-This requires an input json file with the format:
-
-```
-[
-  {
-    "review_id": "review_id_1",
-    "gold_annotations": {
-      "overall": 5,
-      "any_other_score_type": 5,
-    }
-  },
-  {
-    "review_id": "review_id_2",
-    "gold_annotations": {
-      "overall": 5,
-      "any_other_score_type": 5,
-    }
-  },
-]
-```
+The value of the `score` field should be a float value from the set {0.0, 0.5, 1.0, ... , 5.0}.
 
 
 ## Feature pipeline
