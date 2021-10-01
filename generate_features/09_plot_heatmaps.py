@@ -30,7 +30,7 @@ def get_p_corr(correlations):
 
     return features, corr, p_values
 
-def plot_heatmap(file_name, features, corr, p_values):
+def plot_heatmap(run_directory, plot_type, features, corr, p_values):
     n = len(features)
     fig, axes = plt.subplots(1, 2, figsize=(10, n), dpi=75, sharey=True)
     fig.add_subplot(axes[0])
@@ -61,6 +61,8 @@ def plot_heatmap(file_name, features, corr, p_values):
     )
     plt.gca().set_title("Correlation")
 
+    filename = "".join([run_directory, "/plots/", plot_type, ".pdf"])
+
     plt.savefig(file_name, bbox_inches='tight')
 
 def get_significant_features(method, features, corr, p_values):
@@ -90,12 +92,12 @@ def main():
 
     # Plot the heatmap for significant features (p < 0.05)
     sig_features, sig_corr, sig_p_values = get_significant_features('normal', features, corr, p_values)
-    plot_heatmap('plots/significant_feature', sig_features, sig_corr, sig_p_values)
+    plot_heatmap(args.run_directory, 'significant_feature', sig_features, sig_corr, sig_p_values)
 
     # Plot the heatmap for significant features (with Bonferroni Correction)
     sig_features_correction, sig_corr_correction, sig_p_values_correction = get_significant_features('correction', features,
                                                                                                      corr, p_values)
-    plot_heatmap('plots/significant_feature_after_correction', sig_features_correction, sig_corr_correction,
+    plot_heatmap(args.run_directory, 'significant_feature_after_correction', sig_features_correction, sig_corr_correction,
                  sig_p_values_correction)
 
 
