@@ -50,3 +50,8 @@ The following outputs are generated:
 | Features           | `[run_name]/final_features.json`    |
 | Correlation scores | `[run_name]/correlations.json`    |
 | Plots              | `[run_name]/plots/*`    |
+
+
+# Notes
+* To run on `gypsum.cs.umass.edu`, please request a 1080ti node; other nodes have compatibility issues.
+* To generate plots with the data collected for the 696DS project for comparison, use `data/final_annotated_scored.json` as the input file.
