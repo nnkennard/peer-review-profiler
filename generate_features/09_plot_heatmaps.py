@@ -63,7 +63,7 @@ def plot_heatmap(run_directory, plot_type, features, corr, p_values):
 
     filename = "".join([run_directory, "/plots/", plot_type, ".pdf"])
 
-    plt.savefig(file_name, bbox_inches='tight')
+    plt.savefig(filename, bbox_inches='tight')
 
 def get_significant_features(method, features, corr, p_values):
     sig_features = []
