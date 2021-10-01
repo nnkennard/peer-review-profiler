@@ -67,10 +67,10 @@ python generate_features/07_consolidate_features.py \
 
 echo "Analyzing features"
 python generate_features/08_correlation_with_quality.py \
-   -a 'data/final_annotated.json' \
-   -d $run_name -c 'overall'
+   -i ${run_name}/input.json \
+   -d $run_name
 
-mkdir plots
+mkdir ${run_name}/plots
 
 echo "Plotting heatmaps"
 python generate_features/09_plot_heatmaps.py \

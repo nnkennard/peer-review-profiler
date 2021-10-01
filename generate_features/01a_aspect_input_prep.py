@@ -12,6 +12,7 @@ import sys
 
 import pipeline_lib
 
+print(pipeline_lib.get_input_file_name(sys.argv[1]))
 with open(pipeline_lib.get_input_file_name(sys.argv[1]), 'r') as f:
   with open(sys.argv[2], 'w') as g:
     g.write("\n".join(

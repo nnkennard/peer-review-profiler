@@ -7,20 +7,16 @@ import json
 parser = argparse.ArgumentParser(
     description='Find features that are significantly correlated with an annotation field')
 
-parser.add_argument('-a',
-                    '--adjudicated_annotation_file',
+parser.add_argument('-i',
+                    '--input_file',
                     type=str,
-                    help='path to adjudicated annotation file')
+                    help='path to original json annotation file')
 
 parser.add_argument('-d',
                     '--run_directory',
                     type=str,
                     help='path to run directory that contains final features file')
 
-parser.add_argument('-c',
-                    '--correlation_field',
-                    type=str,
-                    help='field in the annotation file to correlate features with')
 
 corr_function = pearsonr
 
@@ -37,24 +33,23 @@ def get_all_feature_names(features_file):
     return features.keys()
 
 
-def get_feature_values(annotation_file, features_file, correlation_field):
+def get_feature_values(input_file, features_file):
   all_feature_names = get_all_feature_names(features_file)
   feature_values = {feature_name: [] for feature_name in all_feature_names}
   feature_values['score'] = []
 
-  with open(annotation_file, 'r') as f:
+  with open(input_file, 'r') as f:
     final_annotations = json.load(f)
-  
+    score_map = {obj["review_id"]:obj["score"] for obj in final_annotations}
+
   with open(features_file, 'r') as f:
     final_features = json.load(f)
-  
-  for review in final_annotations:
-    review_id = review['review_id']
+
+  for review_id, score in score_map.items():
     features = final_features.get(review_id)
-    if features and review['gold_annotation']:
-      for feature_name in all_feature_names:
-        feature_values[feature_name].append(features.get(feature_name, 0))
-      feature_values['score'].append(review['gold_annotation'].get(correlation_field))
+    for feature_name in all_feature_names:
+      feature_values[feature_name].append(features.get(feature_name, 0))
+    feature_values['score'].append(score)
 
   return feature_values
 
@@ -66,9 +61,8 @@ def main():
   output_file = args.run_directory + "/correlations.json"
 
   feature_values = get_feature_values(
-    args.adjudicated_annotation_file, 
-    features_file, 
-    args.correlation_field
+    args.input_file,
+    features_file,
   )
   feature_correlations = collections.defaultdict(dict)
 
