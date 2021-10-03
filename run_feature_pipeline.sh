@@ -39,9 +39,9 @@ python generate_features/02_generate_argument_labels.py \
 	-o ${run_name}
 
 
-echo "Generating politeness labels"
-python generate_features/03_generate_politeness_labels.py \
-	-o $run_name
+echo "Generating length features"
+python generate_features/03_generate_length_features.py \
+  -o $run_name
 
 deactivate
 source specificity_ve/bin/activate
@@ -53,9 +53,9 @@ bash generate_features/04_generate_specificity_labels.sh \
 deactivate
 source ve/bin/activate
 
-echo "Generating length features"
-python generate_features/05_generate_length_features.py \
-	-o $run_name
+echo "Generating politeness labels"
+python generate_features/05_generate_politeness_labels.py \
+  -o $run_name
 
 echo "Generating combination scores"
 python generate_features/06_generate_combined_feature.py \
