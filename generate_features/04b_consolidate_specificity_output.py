@@ -27,10 +27,10 @@ def main():
 
   final_builder = {}
   for review_id, specificities in obj_builder.items():
-    assert list(sorted(specificities.keys())) == list(
-    range(len(specificities)))
-    final_builder[review_id] = {"specificities":[specificities[i] for i in
-    range(len(specificities))]}
+    assert list(sorted(specificities.keys())) == list(range(len(specificities)))
+    final_builder[review_id] = {
+        "specificities": [specificities[i] for i in range(len(specificities))]
+    }
 
   with open(args.dir_name + "/specificity_features.json", 'w') as f:
     json.dump(final_builder, f)

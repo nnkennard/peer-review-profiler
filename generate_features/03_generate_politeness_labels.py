@@ -29,13 +29,13 @@ def main():
     for example in obj:
       review_id = example["review_id"]
       features = []
-      corpus = Corpus(
-          utterances=[Utterance(text=example["review_text"],
-          speaker=reviewer_speakers[0])])
+      corpus = Corpus(utterances=[
+          Utterance(text=example["review_text"], speaker=reviewer_speakers[0])
+      ])
       corpus = text_parser.transform(corpus)
       corpus = ps.transform(corpus, markers=True)
-      overall_features[review_id] = corpus.get_utterances_dataframe()[
-          "meta.politeness_strategies"][0]
+      overall_features[review_id] = corpus.get_utterances_dataframe(
+      )["meta.politeness_strategies"][0]
 
   with open(args.output_dir + "/politeness_features.json", 'w') as f:
     json.dump(overall_features, f)

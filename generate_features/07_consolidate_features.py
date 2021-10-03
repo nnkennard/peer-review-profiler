@@ -15,11 +15,14 @@ parser.add_argument(
     type=str,
     help='JSON file with review text to annotate with specificity')
 
+
 def count_key(arg_name):
   return "count_{0}".format(arg_name)
 
+
 def normalized_key(arg_name):
   return "norm_{0}".format(arg_name)
+
 
 def featurize_list(feature_list):
   transformed = {}
@@ -29,41 +32,50 @@ def featurize_list(feature_list):
     transformed[normalized_key(arg_name)] = count / len(feature_list)
   return transformed
 
+
 def transform_argument(features):
   return featurize_list(features["argument_labels"])
+
 
 def transform_aspect(features):
   return featurize_list([aspect for aspect, span in features["aspect_spans"]])
 
+
 def central_tendencies(values, name):
   return {
-    "mean_{0}".format(name): np.mean(values),
-    "min_{0}".format(name): min(values),
-    "max_{0}".format(name): max(values),
-    "median_{0}".format(name): np.median(values)
+      "mean_{0}".format(name): np.mean(values),
+      "min_{0}".format(name): min(values),
+      "max_{0}".format(name): max(values),
+      "median_{0}".format(name): np.median(values)
   }
+
 
 def transform_specificity(features):
   return central_tendencies(features["specificities"], "specificity")
 
+
 def add_scores(scores):
   return {"combined_score": round(sum(scores), 5)}
+
 
 def transform_combined_score(features):
   return add_scores(features["combination_score"])
 
+
 TRANSFORM_MAP = {
-  pipeline_lib.FeatureType.ARGUMENT: transform_argument,
-  pipeline_lib.FeatureType.ASPECT: transform_aspect,
-  pipeline_lib.FeatureType.POLITENESS: lambda x:x,
-  pipeline_lib.FeatureType.SPECIFICITY: transform_specificity,
-  pipeline_lib.FeatureType.LENGTH: lambda x:x,
-  pipeline_lib.FeatureType.COMBINED: transform_combined_score
+    pipeline_lib.FeatureType.ARGUMENT: transform_argument,
+    pipeline_lib.FeatureType.ASPECT: transform_aspect,
+    pipeline_lib.FeatureType.POLITENESS: lambda x: x,
+    pipeline_lib.FeatureType.SPECIFICITY: transform_specificity,
+    pipeline_lib.FeatureType.LENGTH: lambda x: x,
+    pipeline_lib.FeatureType.COMBINED: transform_combined_score
 }
+
 
 def get_feature_obj(dir_name, feature_type):
   with open(dir_name + "/" + feature_type + "_features.json", 'r') as f:
     return json.load(f)
+
 
 def main():
 
@@ -72,7 +84,8 @@ def main():
   overall_features = collections.defaultdict(dict)
 
   for feature_name in pipeline_lib.FeatureType.ALL:
-    for review_id, features in get_feature_obj(args.run_directory, feature_name).items():
+    for review_id, features in get_feature_obj(args.run_directory,
+                                               feature_name).items():
       overall_features[review_id].update(TRANSFORM_MAP[feature_name](features))
 
   print(args.run_directory + "/final_features.json")
@@ -83,4 +96,3 @@ def main():
 
 if __name__ == "__main__":
   main()
-

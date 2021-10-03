@@ -7,6 +7,7 @@ class ArgumentType(object):
   QUOTE = "quote"
   ALL = [FACT, EVALUATION, REQUEST, REFERENCE, NONARG, QUOTE]
 
+
 class FeatureType(object):
   ARGUMENT = "argument"
   ASPECT = "aspect"
@@ -16,10 +17,12 @@ class FeatureType(object):
   COMBINED = "combined"
   ALL = [ARGUMENT, ASPECT, POLITENESS, SPECIFICITY, LENGTH, COMBINED]
 
+
 class CombinedFeatureType(object):
   ARGUMENT = "argument"
   SPECIFICITY = "specificity"
   ALL = [ARGUMENT, SPECIFICITY]
+
 
 def get_input_file_name(run_dir):
   return run_dir + "/input.json"

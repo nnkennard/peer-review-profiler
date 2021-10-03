@@ -21,8 +21,12 @@ def main():
     obj = json.load(f)
     for example in obj:
       overall_features[example["review_id"]] = {
-        "num_sentences": len(example["review_sentences"]),
-        "num_tokens": sum(len(word_tokenize(sent)) for sent in example["review_sentences"])
+          "num_sentences":
+              len(example["review_sentences"]),
+          "num_tokens":
+              sum(
+                  len(word_tokenize(sent))
+                  for sent in example["review_sentences"])
       }
 
   with open(args.output_dir + "/length_features.json", 'w') as f:

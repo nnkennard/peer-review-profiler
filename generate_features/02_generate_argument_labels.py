@@ -33,6 +33,7 @@ parser.add_argument('-o', '--output_dir', type=str, help='Output JSON file')
 
 SCIBERT_BASE = "allenai/scibert_scivocab_uncased"
 
+
 def get_model_and_tokenizer(scibert_ckpt, device):
   """Load model from checkpoint and initialize tokenizer.
 
