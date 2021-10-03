@@ -15,6 +15,9 @@ parser.add_argument('-o', '--output_dir', type=str, help='Output JSON file')
 def main():
   args = parser.parse_args()
 
+  with open(args.output_dir + '/length_features.json', 'r') as f:
+    length_features = json.load(f)
+
   reviewer_speakers = [
       Speaker(id="reviewer_id0", name="Reviewer0"),
       Speaker(id="reviewer_id1", name="Reviewer1")
@@ -34,8 +37,17 @@ def main():
       ])
       corpus = text_parser.transform(corpus)
       corpus = ps.transform(corpus, markers=True)
-      overall_features[review_id] = corpus.get_utterances_dataframe(
-      )["meta.politeness_strategies"][0]
+      features_dict = corpus.get_utterances_dataframe()["meta.politeness_markers"][0]
+      politeness_features = {}
+      num_tokens = length_features[review_id]['num_tokens']
+      num_sentences = length_features[review_id]['num_sentences']
+      for feature_name, feature in features_dict.items():
+        if 'start' in feature_name:
+          politeness_features[feature_name] = round(len(feature) / num_sentences, 5)
+        else:
+          politeness_features[feature_name] = round(len(feature) / num_tokens, 5)
+
+      overall_features[review_id] = politeness_features
 
   with open(args.output_dir + "/politeness_features.json", 'w') as f:
     json.dump(overall_features, f)
