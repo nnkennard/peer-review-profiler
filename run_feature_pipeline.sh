@@ -76,3 +76,7 @@ echo "Plotting heatmaps"
 python generate_features/09_plot_heatmaps.py \
    -d $run_name
 
+echo "Producing result table"
+python generate_features/10_produce_table.py \
+   -d $run_name
+
