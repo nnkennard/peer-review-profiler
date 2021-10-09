@@ -30,8 +30,12 @@ def get_correlation(feature_values, annotation_field_values):
 def get_all_feature_names(features_file):
   with open(features_file, 'r') as f:
     final_features = json.load(f)
+
+  all_feature_names = []
   for review_id, features in final_features.items():
-    return features.keys()
+    all_feature_names.extend(features.keys())
+
+  return set(all_feature_names)
 
 
 def get_feature_values(input_file, features_file):

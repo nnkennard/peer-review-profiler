@@ -38,7 +38,14 @@ def transform_argument(features):
 
 
 def transform_aspect(features):
-  return featurize_list([aspect for aspect, span in features["aspect_spans"]])
+  feature_names = [aspect.split('_')[0] for aspect, span in features["aspect_spans"]]
+  for i in range(len(feature_names)):
+      if feature_names[i] == 'meaningful':
+          feature_names[i] = 'comparison'
+
+  aspect_features = featurize_list(feature_names)
+  aspect_features['aspect_coverage'] = len(set(feature_names)) / 8
+  return aspect_features
 
 
 def central_tendencies(values, name):
@@ -46,7 +53,8 @@ def central_tendencies(values, name):
       "mean_{0}".format(name): np.mean(values),
       "min_{0}".format(name): min(values),
       "max_{0}".format(name): max(values),
-      "median_{0}".format(name): np.median(values)
+      "median_{0}".format(name): np.median(values),
+      "ratio_{0}".format(name): np.sum(np.array(values) > 0.55) / len(values)
   }
 
 
