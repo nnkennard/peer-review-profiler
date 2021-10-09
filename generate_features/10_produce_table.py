@@ -23,7 +23,8 @@ def main():
 
   with open(correlation_file, 'r') as f:
     correlations = json.load(f)
-
+  pd.set_option('display.max_columns', None)
+  
   df_dicts = []
   num_features = len(correlations)
   for feature_name, corr_values in correlations.items():
