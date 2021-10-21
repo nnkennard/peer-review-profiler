@@ -32,7 +32,7 @@ This requires an input json file with the format:
 ]
 ```
 
-The `tokenized_review_text` field is optional. If not supplied, the sentences in review_text are separated using NLTK.
+The `review_sentences` field is optional. If not supplied, the sentences in review_text are separated using NLTK.
 The value of the `score` field should be a float value from the set {0.0, 0.5, 1.0, ... , 5.0}.
 
 Then, run:
