@@ -19,21 +19,17 @@ This requires an input json file with the format:
 [
   {
     "review_text": "This is the first review. This is the second sentence of the first review.",
-    "review_sentences": ["This is the first review.", "This is the second sentence of the first review."],
     "review_id": "review_id_1",
     "score": 1.0,
   },
   {
     "review_text": "This is the second review.",
-    "review_sentences": ["This is the second review.", "This is the second sentence of the second review."],
     "review_id": "review_id_2",
     "score": 3.5,
   },
 ]
 ```
-
-The `review_sentences` field is optional. If not supplied, the sentences in review_text are separated using NLTK.
-The value of the `score` field should be a float value from the set {0.0, 0.5, 1.0, ... , 5.0}.
+The value of the `score` field should be a float value from the set {1.0, 1.5, 2.0, ... , 5.0}.
 
 Then, run:
 
