@@ -3,29 +3,28 @@
 # Create two virtual envs
 
 create_virtualenv() {
-  module_name=$1
+  python_version=$1
   venv_name=$2
   requirements_file=$3
 
-  module load $module_name
-    python3 -m venv $venv_name
-    source $venv_name/bin/activate
-      python -m pip install --upgrade pip
-      python -m pip install -r $requirements_file
-    deactivate
-  module unload $module_name
 
+  conda create --name $venv_name python=$python_version
+  conda activate $venv_name
+  python -m pip install --upgrade pip
+  python -m pip install -r $requirements_file
+  conda deactivate
 }
 
-create_virtualenv python3/3.9.0-2010 ve requirements.txt
-create_virtualenv python3/3.7.3-1904 specificity_ve requirements_specificity.txt
+#create_virtualenv 3.9.0 prp_env requirements.txt
+#create_virtualenv 3.7.3 prp_specificity_env requirements_specificity.txt
 
-git submodule update --init --recursive
-git submodule update --init --recursive # I don't know if these needs to be run twice? But I've had to
+#git submodule update --init --recursive
+#git submodule update --init --recursive # I don't know if these needs to be run twice? But I've had to
 
 cd ReviewAdvisor/
-bash download_tagger.sh
-bash download_dataset.sh
+# The following two downloads don't work. I manually download them through a browser and scp to the server.
+#bash download_tagger.sh
+#bash download_dataset.sh
 cd tagger
 ln -s ../seqlab_final/
 sed -i 's/is_world_master/is_world_process_zero/' run_tagger.py
