@@ -58,7 +58,7 @@ def featurize_file(path, output_dir):
             output_obj[key] = featurize_text(text)
     output_path = f'{output_dir}/' + path.split('/')[-1]
     with open(output_path, 'w') as f:
-        json.dump(output_obj, f)
+      f.write(json.dumps(output_obj, indent=2))
 
 
 def main():

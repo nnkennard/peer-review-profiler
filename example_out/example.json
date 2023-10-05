@@ -1,0 +1,81 @@
+{
+  "review_1": {
+    "char_len": 26,
+    "sentence_len": 1,
+    "token_len": 6,
+    "tokenized": [
+      [
+        "This",
+        "is",
+        "a",
+        "positive",
+        "review",
+        "."
+      ]
+    ],
+    "feature_politeness_==Please==": 0,
+    "feature_politeness_==Please_start==": 0,
+    "feature_politeness_==HASHEDGE==": 0,
+    "feature_politeness_==Indirect_(btw)==": 0,
+    "feature_politeness_==Hedges==": 0,
+    "feature_politeness_==Factuality==": 0,
+    "feature_politeness_==Deference==": 0,
+    "feature_politeness_==Gratitude==": 0,
+    "feature_politeness_==Apologizing==": 0,
+    "feature_politeness_==1st_person_pl.==": 0,
+    "feature_politeness_==1st_person==": 0,
+    "feature_politeness_==1st_person_start==": 0,
+    "feature_politeness_==2nd_person==": 0,
+    "feature_politeness_==2nd_person_start==": 0,
+    "feature_politeness_==Indirect_(greeting)==": 0,
+    "feature_politeness_==Direct_question==": 0,
+    "feature_politeness_==Direct_start==": 0,
+    "feature_politeness_==HASPOSITIVE==": 1,
+    "feature_politeness_==HASNEGATIVE==": 0,
+    "feature_politeness_==SUBJUNCTIVE==": 0,
+    "feature_politeness_==INDICATIVE==": 0
+  },
+  "review_2": {
+    "char_len": 44,
+    "sentence_len": 2,
+    "token_len": 11,
+    "tokenized": [
+      [
+        "This",
+        "is",
+        "a",
+        "negative",
+        "review",
+        "."
+      ],
+      [
+        "The",
+        "paper",
+        "is",
+        "bad",
+        "."
+      ]
+    ],
+    "feature_politeness_==Please==": 0,
+    "feature_politeness_==Please_start==": 0,
+    "feature_politeness_==HASHEDGE==": 0,
+    "feature_politeness_==Indirect_(btw)==": 0,
+    "feature_politeness_==Hedges==": 0,
+    "feature_politeness_==Factuality==": 0,
+    "feature_politeness_==Deference==": 0,
+    "feature_politeness_==Gratitude==": 0,
+    "feature_politeness_==Apologizing==": 0,
+    "feature_politeness_==1st_person_pl.==": 0,
+    "feature_politeness_==1st_person==": 0,
+    "feature_politeness_==1st_person_start==": 0,
+    "feature_politeness_==2nd_person==": 0,
+    "feature_politeness_==2nd_person_start==": 0,
+    "feature_politeness_==Indirect_(greeting)==": 0,
+    "feature_politeness_==Direct_question==": 0,
+    "feature_politeness_==Direct_start==": 0,
+    "feature_politeness_==HASPOSITIVE==": 0,
+    "feature_politeness_==HASNEGATIVE==": 1,
+    "feature_politeness_==SUBJUNCTIVE==": 0,
+    "feature_politeness_==INDICATIVE==": 0
+  }
+}
