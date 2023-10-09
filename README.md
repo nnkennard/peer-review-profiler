@@ -9,7 +9,7 @@ python -m pip install -r requirements.txt
 ```
 
 # Featurizer
-The featurizer script reads all json files from a specified input directory and writes the features to corresponding json files in a specified output directory.
+The featurize script reads all json files from a specified input directory and writes the features to corresponding json files in a specified output directory.
 
 Input file format:
 ```
@@ -23,7 +23,7 @@ Input file format:
 
 Then run 
 ```
-python process_texts.py -i [input directory] -o [output directory]
+python featurize.py -i [input directory] -o [output directory]
 ```
 
 
