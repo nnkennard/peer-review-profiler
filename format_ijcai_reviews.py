@@ -3,8 +3,10 @@ import csv
 import json
 
 parser = argparse.ArgumentParser(description='')
-parser.add_argument('-i', '--input_csv', default='', type=str, help='')
-parser.add_argument('-o', '--output_json', default='', type=str, help='')
+parser.add_argument('-i', '--input_csv', type=str,
+  help='IJCAI reviews in csv format.')
+parser.add_argument('-o', '--output_json', type=str, 
+  help='Path to JSON file to which formatted reviews should be written.')
 
 
 

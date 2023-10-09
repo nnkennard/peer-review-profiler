@@ -6,8 +6,10 @@ import stanza
 from convokit import Speaker, Utterance, Corpus, TextParser, PolitenessStrategies
 
 parser = argparse.ArgumentParser(description='')
-parser.add_argument('-i', '--input_dir', default='', type=str, help='')
-parser.add_argument('-o', '--output_dir', default='', type=str, help='')
+parser.add_argument('-i', '--input_dir', type=str,
+  help='Directory containing input-formatted JSON files.')
+parser.add_argument('-o', '--output_dir', type=str,
+  help='Directory to which features JSON format should be written.')
 
 
 SENTENCIZE_PIPELINE = stanza.Pipeline("en", processors="tokenize")
