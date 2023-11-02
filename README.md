@@ -8,6 +8,8 @@ conda activate profiler_env
 python -m pip install -r requirements.txt
 ```
 
+TODO: additional conda env and downloading seqlab.zip
+
 # Featurizer
 The featurize script reads all json files from a specified input directory and writes the features to corresponding json files in a specified output directory.
 
