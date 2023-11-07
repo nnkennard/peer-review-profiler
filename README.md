@@ -10,7 +10,6 @@ python -m pip install -r requirements.txt
 
 We require a separate environment for aspect features
 ```
-git submodule add https://github.com/neulab/ReviewAdvisor.git
 conda create --name profiler_aspect_env python=3.8
 conda deactivate
 conda activate profiler_aspect_env
