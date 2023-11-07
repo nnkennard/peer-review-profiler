@@ -8,7 +8,16 @@ conda activate profiler_env
 python -m pip install -r requirements.txt
 ```
 
-TODO: additional conda env and downloading seqlab.zip
+We require a separate environment for aspect features
+```
+git submodule add https://github.com/neulab/ReviewAdvisor.git
+conda create --name profiler_aspect_env python=3.8
+conda deactivate
+conda activate profiler_aspect_env
+python -m pip install -r ReviewAdvisor/tagger/requirements.txt
+```
+
+ReviewAdvisor also requires that you download their data and model files. You should be able to use `ReviewAdvisor/download_dataset.sh` and `ReviewAdvisor/download_tagger.sh`, but I ran into some problems with Google Drive and had to download them through a browser and scp to Unity. 
 
 # Featurizer
 The featurize script reads all json files from a specified input directory and writes the features to corresponding json files in a specified output directory.
