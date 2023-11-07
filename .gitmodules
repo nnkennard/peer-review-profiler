@@ -1,0 +1,3 @@
+[submodule "ReviewAdvisor"]
+	path = ReviewAdvisor
+	url = https://github.com/neulab/ReviewAdvisor.git
