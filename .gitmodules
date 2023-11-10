@@ -1,3 +1,6 @@
 [submodule "ReviewAdvisor"]
 	path = ReviewAdvisor
 	url = https://github.com/neulab/ReviewAdvisor.git
+[submodule "Domain-Agnostic-Sentence-Specificity-Prediction"]
+	path = Domain-Agnostic-Sentence-Specificity-Prediction
+	url = https://github.com/wjko2/Domain-Agnostic-Sentence-Specificity-Prediction.git

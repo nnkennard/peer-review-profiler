@@ -24,6 +24,8 @@ convokit_TP = TextParser()
 convokit_PS = PolitenessStrategies()
 convokit_rev = Speaker(id="reviewer_id")
 
+SPECIFICITY_DIR = "Domain-Agnostic-Sentence-Specificity-Prediction/"
+
 
 def length_featurizer(input_obj):
     features = {}
@@ -66,15 +68,33 @@ def aspect_featurizer(input_obj):
     with open('ReviewAdvisor/tagger/result.jsonl', 'r') as f:
         for key, result_str in zip(key_order, f.readlines()):
             result = json.loads(result_str)
-            features[key] = dict(collections.Counter(
-                f'aspect_{label[2]}' for label in result['labels']))
+            features[key] = dict(
+                collections.Counter(f'aspect_{label[2]}'
+                                    for label in result['labels']))
     return features
+
+
+def specificity_featurizer(current_output_obj):
+    sentence_provenances = []
+    sentences = []
+    for key, current_features in current_output_obj.items():
+        for i, sentence in enumerate(current_features['tokenized']):
+            sentence_provenances.append((key, i))
+            sentences.append(" ".join(sentence))
+    with open(f'{SPECIFICITY_DIR}/twitters.txt', 'w') as s_file:
+        with open(f'{SPECIFICITY_DIR}/twitteru.txt', 'w') as u_file:
+            for handle in [s_file, u_file]:
+                handle.write("sent_text\n")
+                for sentence in sentences:
+                    handle.write(sentence + "\n")
+    #subprocess.run('bash specificity_helper.sh'.split())
 
 
 FEATURIZER_MAP = {
     "length": length_featurizer,
     "politeness": politeness_featurizer,
     "aspect": aspect_featurizer,
+#    "specificity": specificity_featurizer,
 }
 
 
@@ -84,7 +104,11 @@ def featurize_file(path, output_dir):
 
     output_obj = collections.defaultdict(dict)
     for feature_name, batch_featurizer in FEATURIZER_MAP.items():
-        features = batch_featurizer(input_obj)
+        if feature_name == "specificity":
+            assert all('tokenized' in v for v in output_obj.values())
+            features = batch_featurizer(output_obj)
+        else:
+            features = batch_featurizer(input_obj)
         for key, feature_map in features.items():
             output_obj[key].update(feature_map)
 
